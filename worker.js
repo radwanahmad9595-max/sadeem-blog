@@ -8,13 +8,13 @@ function json(data, status = 200) {
 function checkAuth(request, env) {
   if (!env.SADEEM_KV) {
     return json(
-      { error: "لم يتم ربط مساحة KV باسم SADEEM_KV من إعدادات Cloudflare Pages." },
+      { error: "لم يتم ربط مساحة KV باسم SADEEM_KV من إعدادات Cloudflare." },
       500
     );
   }
   if (!env.ADMIN_KEY) {
     return json(
-      { error: "لم يتم ضبط متغيّر البيئة ADMIN_KEY من إعدادات Cloudflare Pages." },
+      { error: "لم يتم ضبط متغيّر البيئة ADMIN_KEY من إعدادات Cloudflare." },
       500
     );
   }
@@ -25,11 +25,10 @@ function checkAuth(request, env) {
   return null;
 }
 
-export async function onRequestGet(context) {
-  const { env } = context;
+async function getPosts(env) {
   if (!env.SADEEM_KV) {
     return json(
-      { error: "لم يتم ربط مساحة KV باسم SADEEM_KV من إعدادات Cloudflare Pages." },
+      { error: "لم يتم ربط مساحة KV باسم SADEEM_KV من إعدادات Cloudflare." },
       500
     );
   }
@@ -38,8 +37,7 @@ export async function onRequestGet(context) {
   return json({ posts });
 }
 
-export async function onRequestPost(context) {
-  const { request, env } = context;
+async function addPost(request, env) {
   const authError = checkAuth(request, env);
   if (authError) return authError;
 
@@ -74,12 +72,10 @@ export async function onRequestPost(context) {
   return json({ post: newPost });
 }
 
-export async function onRequestDelete(context) {
-  const { request, env } = context;
+async function deletePost(request, env, url) {
   const authError = checkAuth(request, env);
   if (authError) return authError;
 
-  const url = new URL(request.url);
   const id = url.searchParams.get("id");
   if (!id) return json({ error: "missing_id" }, 400);
 
@@ -90,3 +86,18 @@ export async function onRequestDelete(context) {
 
   return json({ ok: true });
 }
+
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/posts") {
+      if (request.method === "GET") return getPosts(env);
+      if (request.method === "POST") return addPost(request, env);
+      if (request.method === "DELETE") return deletePost(request, env, url);
+      return json({ error: "method_not_allowed" }, 405);
+    }
+
+    return env.ASSETS.fetch(request);
+  }
+};
