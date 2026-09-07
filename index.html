@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مدونة السديم الأدبية</title>
+<meta name="description" content="مدونة السديم الأدبية — فضاء لنشر النصوص الأدبية، حيث يوثَّق كل نص برقم تعريفي خاص به.">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#home" class="brand">
+      <img src="assets/logo.svg" alt="شعار مدونة السديم" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-name">مدونة السديم</span>
+        <span class="brand-sub">الأدبية</span>
+      </div>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="#home">الرئيسية</a>
+      <a href="#texts">النصوص</a>
+      <a href="#about">عن المدونة</a>
+      <a href="#submit" class="nav-cta">أضف نصاً</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="home">
+    <div class="hero-glow"></div>
+    <div class="container hero-inner">
+      <img src="assets/logo.svg" alt="" class="hero-logo" aria-hidden="true">
+      <h1 class="hero-title">مدونة السديم <span>الأدبية</span></h1>
+      <p class="hero-tagline">حيثُ تولدُ الكلماتُ من غبارِ الحروف، وتُختمُ كلُّ قصةٍ برقمٍ يوثّق مكانها بين النجوم.</p>
+      <div class="hero-actions">
+        <a href="#texts" class="btn btn-primary">استعرض النصوص</a>
+        <a href="#submit" class="btn btn-ghost">شارك نصك</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" id="statCount">0</span><span class="stat-label">نص منشور</span></div>
+        <div class="stat"><span class="stat-num" id="statAuthors">0</span><span class="stat-label">كاتب وكاتبة</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="texts-section" id="texts">
+    <div class="container">
+      <div class="section-head">
+        <h2>النصوص المنشورة</h2>
+        <p>كل نص هنا موثّق برقم تعريفي فريد، يشكّل بصمته الخاصة في أرشيف السديم.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="text" id="searchInput" placeholder="ابحث باسم الكاتب أو كلمة من النص...">
+        </div>
+        <select id="sortSelect" class="sort-select">
+          <option value="newest">الأحدث أولاً</option>
+          <option value="oldest">الأقدم أولاً</option>
+          <option value="author">حسب اسم الكاتب</option>
+        </select>
+      </div>
+
+      <div class="posts-grid" id="postsGrid"></div>
+      <p class="empty-state" id="emptyState" hidden>لا توجد نصوص مطابقة لبحثك.</p>
+    </div>
+  </section>
+
+  <section class="submit-section" id="submit">
+    <div class="container submit-grid">
+      <div class="submit-info">
+        <h2>شارك نصّك مع السديم</h2>
+        <p>أضف نصك الأدبي واسمك، وسيحصل تلقائياً على <strong>رقم توثيق فريد</strong> يميزه للأبد داخل أرشيف المدونة — رقم لا يتكرر، يشبه بصمة نجمية لعملك.</p>
+        <ul class="info-list">
+          <li>يُنشأ الرقم تلقائياً فور النشر.</li>
+          <li>يظهر الرقم على بطاقة النص وفي صفحته الكاملة.</li>
+          <li>يمكنك نسخ الرقم لمشاركته أو الرجوع إليه لاحقاً.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section" id="about">
+    <div class="container about-inner">
+      <img src="assets/logo.svg" alt="" class="about-logo" aria-hidden="true">
+      <h2>عن مدونة السديم</h2>
+      <p>السديم سحابة من الغاز والغبار تتشكل فيها النجوم قبل أن تُضيء السماء — ومن هذا المعنى وُلدت الفكرة: مساحة رقمية تتجمّع فيها الكلمات المتناثرة من كتّاب مختلفين لتتحول إلى نصوص مضيئة، كل واحدة منها نجمٌ له مكانه وهويته الخاصة.</p>
+      <p>كل نص يُنشر هنا يحصل على <strong>رقم تعريفي فريد</strong> يوثّقه بشكل دائم، تماماً كما تُصنَّف النجوم في الفلك — إشارة إلى أن كل صوت أدبي يستحق أن يُحفظ ويُعرف موقعه.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.svg" alt="" class="footer-logo">
+      <span>مدونة السديم الأدبية</span>
+    </div>
+    <p>جميع الحقوق محفوظة &copy; <span id="year"></span> — مدونة السديم الأدبية</p>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="إغلاق">&times;</button>
+    <div class="modal-id" id="modalId"></div>
+    <h3 class="modal-title" id="modalTitle"></h3>
+    <div class="modal-meta">
+      <span id="modalAuthor"></span>
+      <span class="dot">•</span>
+      <span id="modalDate"></span>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <button class="btn btn-ghost btn-copy" id="modalCopyId">نسخ رقم التوثيق</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
