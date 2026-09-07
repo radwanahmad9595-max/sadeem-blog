@@ -1,41 +1,22 @@
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "sadeem_posts_v1";
-  const COUNTER_KEY = "sadeem_id_counter_v1";
-
   /* ---------------- data layer ---------------- */
 
-  function loadPosts() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      try {
-        return JSON.parse(raw);
-      } catch (e) {
-        console.warn("تعذر قراءة النصوص المحفوظة، سيتم استخدام القائمة الافتراضية.");
-      }
+  let posts = [];
+
+  async function fetchPosts() {
+    try {
+      const res = await fetch("/api/posts");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "fetch_failed");
+      posts = data.posts || [];
+    } catch (e) {
+      posts = [];
+      showToast("تعذر تحميل النصوص من الخادم، تحقق من اتصالك بالإنترنت.");
     }
-    savePosts(SEED_POSTS);
-    return SEED_POSTS.slice();
+    renderPosts();
   }
-
-  function savePosts(posts) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-  }
-
-  // يضمن أن عداد الأرقام يبدأ بعد أعلى رقم موجود فعلياً في النصوص الابتدائية
-  function primeCounterFromSeed(posts) {
-    if (localStorage.getItem(COUNTER_KEY)) return;
-    let max = 0;
-    posts.forEach((p) => {
-      const match = /(\d+)$/.exec(p.id || "");
-      if (match) max = Math.max(max, parseInt(match[1], 10));
-    });
-    localStorage.setItem(COUNTER_KEY, String(max));
-  }
-
-  let posts = loadPosts();
-  primeCounterFromSeed(posts);
 
   /* ---------------- helpers ---------------- */
 
@@ -262,5 +243,5 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
   buildStarfield();
-  renderPosts();
+  fetchPosts();
 })();

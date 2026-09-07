@@ -1,47 +1,9 @@
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "sadeem_posts_v1";
-  const COUNTER_KEY = "sadeem_id_counter_v1";
-
-  function loadPosts() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      try {
-        return JSON.parse(raw);
-      } catch (e) {
-        console.warn("تعذر قراءة النصوص المحفوظة.");
-      }
-    }
-    savePosts(SEED_POSTS);
-    return SEED_POSTS.slice();
-  }
-
-  function savePosts(posts) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-  }
-
-  function nextId() {
-    const year = new Date().getFullYear();
-    let counter = parseInt(localStorage.getItem(COUNTER_KEY) || "0", 10);
-    counter += 1;
-    localStorage.setItem(COUNTER_KEY, String(counter));
-    const padded = String(counter).padStart(4, "0");
-    return `SDM-${year}-${padded}`;
-  }
-
-  function primeCounterFromSeed(posts) {
-    if (localStorage.getItem(COUNTER_KEY)) return;
-    let max = 0;
-    posts.forEach((p) => {
-      const match = /(\d+)$/.exec(p.id || "");
-      if (match) max = Math.max(max, parseInt(match[1], 10));
-    });
-    localStorage.setItem(COUNTER_KEY, String(max));
-  }
-
-  let posts = loadPosts();
-  primeCounterFromSeed(posts);
+  const KEY_STORAGE = "sadeem_admin_secret";
+  let adminKey = localStorage.getItem(KEY_STORAGE) || "";
+  let posts = [];
 
   function escapeHtml(str) {
     const div = document.createElement("div");
@@ -59,8 +21,71 @@
     toast.textContent = msg;
     toast.classList.add("show");
     clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => toast.classList.remove("show"), 2600);
+    showToast._t = setTimeout(() => toast.classList.remove("show"), 2800);
   }
+
+  function promptForKey() {
+    const val = window.prompt("أدخل رمز الدخول الخاص بلوحة التوثيق:");
+    if (val && val.trim()) {
+      adminKey = val.trim();
+      localStorage.setItem(KEY_STORAGE, adminKey);
+    }
+    return adminKey;
+  }
+
+  function handleUnauthorized() {
+    localStorage.removeItem(KEY_STORAGE);
+    adminKey = "";
+    showToast("رمز الدخول غير صحيح أو غير مُدخل، حاول مجدداً.");
+  }
+
+  /* ---------------- API ---------------- */
+
+  async function apiList() {
+    const res = await fetch("/api/posts");
+    const data = await res.json();
+    if (!res.ok) {
+      showToast(data.error || "تعذر تحميل النصوص.");
+      return [];
+    }
+    return data.posts || [];
+  }
+
+  async function apiAdd(payload) {
+    if (!adminKey) promptForKey();
+    if (!adminKey) return null;
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Admin-Key": adminKey },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.status === 401) {
+      handleUnauthorized();
+      return null;
+    }
+    if (!res.ok) {
+      showToast(data.error || "تعذر نشر النص.");
+      return null;
+    }
+    return data.post;
+  }
+
+  async function apiDelete(id) {
+    if (!adminKey) promptForKey();
+    if (!adminKey) return false;
+    const res = await fetch("/api/posts?id=" + encodeURIComponent(id), {
+      method: "DELETE",
+      headers: { "X-Admin-Key": adminKey }
+    });
+    if (res.status === 401) {
+      handleUnauthorized();
+      return false;
+    }
+    return res.ok;
+  }
+
+  /* ---------------- rendering ---------------- */
 
   const listWrap = document.getElementById("listWrap");
 
@@ -84,36 +109,31 @@
       .join("");
 
     listWrap.querySelectorAll("[data-del]").forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         const id = btn.getAttribute("data-del");
         const post = posts.find((p) => p.id === id);
         if (!post) return;
         if (!confirm(`هل تريد حذف النص "${post.title || "بلا عنوان"}" (${id})؟`)) return;
+        const ok = await apiDelete(id);
+        if (!ok) return;
         posts = posts.filter((p) => p.id !== id);
-        savePosts(posts);
         renderList();
         showToast("تم حذف النص.");
       });
     });
   }
 
-  document.getElementById("adminForm").addEventListener("submit", (e) => {
+  document.getElementById("adminForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const author = document.getElementById("authorInput").value.trim();
     const title = document.getElementById("titleInput").value.trim();
     const body = document.getElementById("bodyInput").value.trim();
     if (!author || !body) return;
 
-    const newPost = {
-      id: nextId(),
-      author,
-      title,
-      body,
-      date: new Date().toISOString()
-    };
+    const newPost = await apiAdd({ author, title, body });
+    if (!newPost) return;
 
     posts.unshift(newPost);
-    savePosts(posts);
     renderList();
     e.target.reset();
     showToast("تم النشر والتوثيق برقم: " + newPost.id);
@@ -137,6 +157,11 @@
     container.appendChild(frag);
   }
 
-  buildStarfield();
-  renderList();
+  async function init() {
+    buildStarfield();
+    posts = await apiList();
+    renderList();
+  }
+
+  init();
 })();
