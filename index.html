@@ -98,9 +98,14 @@
           <option value="oldest">الأقدم أولاً</option>
           <option value="author">حسب اسم الكاتب</option>
         </select>
+        <div class="view-toggle">
+          <button type="button" class="view-btn active" id="viewGridBtn" data-view="grid">بطاقات</button>
+          <button type="button" class="view-btn" id="viewTimelineBtn" data-view="timeline">نهر الزمن</button>
+        </div>
       </div>
 
       <div class="posts-grid" id="postsGrid"></div>
+      <div class="timeline" id="timelineView" hidden></div>
       <p class="empty-state" id="emptyState" hidden>لا توجد نصوص مطابقة لبحثك.</p>
     </div>
   </section>
@@ -151,6 +156,7 @@
       <span id="modalDate"></span>
     </div>
     <div class="modal-body" id="modalBody"></div>
+    <div class="reactions reactions-modal" id="modalReactions"></div>
     <button class="btn btn-ghost btn-copy" id="modalCopyId">نسخ رقم التوثيق</button>
   </div>
 </div>

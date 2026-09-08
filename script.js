@@ -65,12 +65,71 @@
     showToast._t = setTimeout(() => toast.classList.remove("show"), 2400);
   }
 
+  /* ---------------- reactions (لمسات ضوء) ---------------- */
+
+  const REACTION_ICONS = { spark: "✨", moon: "🌙", heart: "❤" };
+  const REACTED_PREFIX = "sadeem_reacted_";
+
+  function hasReacted(postId, type) {
+    return localStorage.getItem(REACTED_PREFIX + postId + "_" + type) === "1";
+  }
+
+  function reactionsHtml(post) {
+    const r = post.reactions || { spark: 0, moon: 0, heart: 0 };
+    return Object.keys(REACTION_ICONS)
+      .map((type) => {
+        const reacted = hasReacted(post.id, type);
+        return `<button type="button" class="reaction-btn${reacted ? " reacted" : ""}" data-react="${type}" data-id="${escapeHtml(post.id)}">
+          <span class="icon">${REACTION_ICONS[type]}</span>
+          <span class="count">${r[type] || 0}</span>
+        </button>`;
+      })
+      .join("");
+  }
+
+  async function reactToPost(id, type, btn) {
+    if (hasReacted(id, type)) return;
+    localStorage.setItem(REACTED_PREFIX + id + "_" + type, "1");
+    btn.classList.add("reacted");
+    const countEl = btn.querySelector(".count");
+    countEl.textContent = (parseInt(countEl.textContent, 10) || 0) + 1;
+
+    try {
+      const res = await fetch("/api/react", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, type })
+      });
+      const data = await res.json();
+      if (res.ok && data.reactions) {
+        const post = posts.find((p) => p.id === id);
+        if (post) post.reactions = data.reactions;
+        document.querySelectorAll(`.reaction-btn[data-id="${CSS.escape(id)}"][data-react="${type}"] .count`).forEach((el) => {
+          el.textContent = data.reactions[type];
+        });
+      }
+    } catch (e) {
+      // العدّاد المحلي يبقى محدَّثاً حتى لو تعذّر الاتصال بالخادم
+    }
+  }
+
+  function bindReactionClicks(container) {
+    container.addEventListener("click", (e) => {
+      const btn = e.target.closest(".reaction-btn");
+      if (!btn || !container.contains(btn)) return;
+      e.stopPropagation();
+      reactToPost(btn.getAttribute("data-id"), btn.getAttribute("data-react"), btn);
+    });
+  }
+
   /* ---------------- rendering ---------------- */
 
   const grid = document.getElementById("postsGrid");
+  const timelineView = document.getElementById("timelineView");
   const emptyState = document.getElementById("emptyState");
   const searchInput = document.getElementById("searchInput");
   const sortSelect = document.getElementById("sortSelect");
+  let viewMode = "grid";
 
   function getFilteredSorted() {
     const q = searchInput.value.trim().toLowerCase();
@@ -95,13 +154,24 @@
 
   function renderPosts() {
     const list = getFilteredSorted();
-    grid.innerHTML = "";
 
     if (list.length === 0) {
       emptyState.hidden = false;
     } else {
       emptyState.hidden = true;
     }
+
+    if (viewMode === "timeline") {
+      renderTimeline(list);
+    } else {
+      renderGrid(list);
+    }
+
+    updateStats();
+  }
+
+  function renderGrid(list) {
+    grid.innerHTML = "";
 
     list.forEach((post) => {
       const { rot, tone, deco, ty, tx, sc } = styleFor(post.id);
@@ -119,6 +189,7 @@
           <h3 class="card-title">${escapeHtml(post.title || "بلا عنوان")}</h3>
           <p class="card-excerpt">${escapeHtml(excerptOf(post.body, 150))}</p>
           <button type="button" class="read-more">اقرأ المزيد</button>
+          <div class="reactions">${reactionsHtml(post)}</div>
           <div class="card-footer">
             <span class="card-author">${escapeHtml(post.author)}</span>
             <span>${formatDate(post.date)}</span>
@@ -126,12 +197,47 @@
         </div>
         <div class="page-fold"></div>
       `;
-      card.addEventListener("click", () => openModal(post.id));
+      card.addEventListener("click", (e) => {
+        if (e.target.closest(".reaction-btn")) return;
+        openModal(post.id);
+      });
       grid.appendChild(card);
     });
 
     observeReveals();
-    updateStats();
+  }
+
+  function renderTimeline(list) {
+    timelineView.innerHTML = list
+      .map(
+        (post) => `
+      <div class="timeline-item" data-id="${escapeHtml(post.id)}">
+        <div class="timeline-card">
+          <div class="timeline-date">${formatDate(post.date)} · ${escapeHtml(post.id)}</div>
+          <h3 class="timeline-title">${escapeHtml(post.title || "بلا عنوان")}</h3>
+          <div class="timeline-meta">${escapeHtml(post.author)}</div>
+          <p class="timeline-excerpt">${escapeHtml(excerptOf(post.body, 130))}</p>
+          <div class="reactions">${reactionsHtml(post)}</div>
+        </div>
+      </div>`
+      )
+      .join("");
+
+    timelineView.querySelectorAll(".timeline-item").forEach((item) => {
+      item.querySelector(".timeline-card").addEventListener("click", (e) => {
+        if (e.target.closest(".reaction-btn")) return;
+        openModal(item.getAttribute("data-id"));
+      });
+    });
+  }
+
+  function setViewMode(mode) {
+    viewMode = mode;
+    grid.hidden = mode !== "grid";
+    timelineView.hidden = mode !== "timeline";
+    document.getElementById("viewGridBtn").classList.toggle("active", mode === "grid");
+    document.getElementById("viewTimelineBtn").classList.toggle("active", mode === "timeline");
+    renderPosts();
   }
 
   function updateStats() {
@@ -149,6 +255,7 @@
   const modalDate = document.getElementById("modalDate");
   const modalBody = document.getElementById("modalBody");
   const modalCopyId = document.getElementById("modalCopyId");
+  const modalReactions = document.getElementById("modalReactions");
   let currentModalPostId = null;
 
   function openModal(id) {
@@ -160,6 +267,7 @@
     modalAuthor.textContent = post.author;
     modalDate.textContent = formatDate(post.date);
     modalBody.textContent = post.body;
+    modalReactions.innerHTML = reactionsHtml(post);
     overlay.classList.add("active");
     document.body.style.overflow = "hidden";
   }
@@ -190,6 +298,13 @@
 
   searchInput.addEventListener("input", renderPosts);
   sortSelect.addEventListener("change", renderPosts);
+
+  document.getElementById("viewGridBtn").addEventListener("click", () => setViewMode("grid"));
+  document.getElementById("viewTimelineBtn").addEventListener("click", () => setViewMode("timeline"));
+
+  bindReactionClicks(grid);
+  bindReactionClicks(timelineView);
+  bindReactionClicks(modalReactions);
 
   /* ---------------- reveal on scroll ---------------- */
 

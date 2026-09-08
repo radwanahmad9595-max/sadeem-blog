@@ -369,6 +369,120 @@ img { max-width: 100%; display: block; }
 }
 .sort-select option { background: var(--bg-mid); }
 
+.view-toggle {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+.view-btn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.view-btn.active {
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  color: #fff;
+}
+
+/* ---------- reactions ---------- */
+.reactions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(60, 44, 28, 0.06);
+  border: 1px solid rgba(60, 44, 28, 0.25);
+  border-radius: 999px;
+  padding: 4px 11px;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+.reaction-btn:hover { transform: translateY(-2px); border-color: var(--stamp-ink); }
+.reaction-btn.reacted {
+  background: rgba(122, 34, 51, 0.12);
+  border-color: var(--stamp-ink);
+  color: var(--stamp-ink);
+  font-weight: 700;
+}
+.reaction-btn .count { min-width: 10px; text-align: center; }
+.reactions-modal .reaction-btn {
+  background: rgba(255,255,255,0.04);
+  border-color: var(--card-border);
+  color: var(--text-dim);
+}
+.reactions-modal .reaction-btn.reacted {
+  background: rgba(207, 158, 74, 0.15);
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+}
+
+/* ---------- timeline (نهر الزمن) ---------- */
+.timeline {
+  position: relative;
+  padding-right: 30px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(var(--accent-1), var(--accent-3));
+  opacity: 0.6;
+}
+.timeline-item {
+  position: relative;
+  padding-right: 30px;
+  margin-bottom: 28px;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  right: 2px;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 0 4px var(--bg-deep), 0 0 12px rgba(var(--accent-glow), 0.6);
+}
+.timeline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.timeline-card:hover { transform: translateX(-6px); border-color: rgba(207, 158, 74, 0.5); }
+.timeline-date { font-size: 0.75rem; color: var(--accent-2); margin-bottom: 6px; }
+.timeline-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--text-main); margin-bottom: 4px; }
+.timeline-meta { font-size: 0.8rem; color: var(--text-faint); margin-bottom: 8px; }
+.timeline-excerpt { font-size: 0.88rem; color: var(--text-dim); line-height: 1.8; }
+
+@media (max-width: 560px) {
+  .timeline { padding-right: 22px; }
+  .timeline-item { padding-right: 22px; }
+}
+
 /* ---------- posts grid : scattered paper notes ---------- */
 .posts-grid {
   column-count: 3;
