@@ -25,6 +25,7 @@
     </a>
     <nav class="main-nav" id="mainNav">
       <a href="#home">الرئيسية</a>
+      <a href="#wheel">عجلة الإلهام</a>
       <a href="#texts">النصوص</a>
       <a href="game.html">أكمل السطر</a>
       <a href="#about">عن المدونة</a>
@@ -51,6 +52,30 @@
       <div class="hero-stats">
         <div class="stat"><span class="stat-num" id="statCount">0</span><span class="stat-label">نص منشور</span></div>
         <div class="stat"><span class="stat-num" id="statAuthors">0</span><span class="stat-label">كاتب وكاتبة</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wheel-section" id="wheel">
+    <div class="container wheel-inner">
+      <div class="section-head">
+        <h2>عجلة الإلهام</h2>
+        <p>أدرها ودع القدر يهديك إلى اقتباسٍ من كتّاب الأدب والحكمة.</p>
+      </div>
+
+      <div class="wheel-stage">
+        <div class="wheel-pointer">▼</div>
+        <div class="wheel-dial" id="wheelDial">
+          <div class="wheel-hub"><img src="assets/logo.svg" alt=""></div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="spinBtn">أدر العجلة</button>
+
+      <div class="quote-reveal" id="quoteReveal" hidden>
+        <span class="quote-mark">”</span>
+        <p class="quote-text" id="quoteText"></p>
+        <p class="quote-author" id="quoteAuthor"></p>
       </div>
     </div>
   </section>
@@ -132,5 +157,6 @@
 <div class="toast" id="toast"></div>
 
 <script src="script.js"></script>
+<script src="wheel.js"></script>
 </body>
 </html>
