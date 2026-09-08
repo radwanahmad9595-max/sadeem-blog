@@ -1,0 +1,186 @@
+/* ---------- score badge ---------- */
+.score-badge {
+  position: fixed;
+  top: 100px;
+  left: 24px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(18, 12, 30, 0.85);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 12px 18px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+.score-star {
+  color: var(--accent-2);
+  font-size: 1.3rem;
+}
+.score-nums { display: flex; flex-direction: column; line-height: 1.1; }
+.score-value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--accent-2);
+}
+.score-label { font-size: 0.7rem; color: var(--text-faint); }
+.score-progress {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  border-right: 1px dashed rgba(255,255,255,0.15);
+  padding-right: 12px;
+  direction: ltr;
+}
+
+@media (max-width: 720px) {
+  .score-badge {
+    position: static;
+    margin: 0 auto 30px;
+    width: fit-content;
+  }
+}
+
+/* ---------- hero ---------- */
+.game-hero {
+  padding: 130px 0 40px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.game-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  margin-bottom: 14px;
+}
+.game-title span {
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.game-tagline {
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+/* ---------- verses ---------- */
+.verses-section { padding: 20px 0 100px; position: relative; z-index: 1; }
+.verses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.verse-card {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.verse-index {
+  font-family: 'Tajawal', monospace;
+  font-size: 0.75rem;
+  color: var(--accent-1);
+  direction: ltr;
+  align-self: flex-start;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.verse-text {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  line-height: 2.3;
+  color: var(--text-main);
+}
+.verse-text .blank {
+  display: inline-block;
+  min-width: 70px;
+  border-bottom: 2px dotted var(--accent-1);
+  color: var(--accent-2);
+  text-align: center;
+}
+.verse-poet {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+.verse-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.verse-input {
+  flex: 1;
+  min-width: 150px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.verse-input:focus { border-color: var(--accent-1); }
+.verse-input:disabled { opacity: 0.6; }
+
+.btn-check, .btn-clear {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.15s, color 0.3s;
+}
+.btn-check {
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  color: #fff;
+}
+.btn-check:active { transform: scale(0.97); }
+.btn-clear {
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-dim);
+}
+.btn-clear:hover { background: rgba(255,255,255,0.05); }
+
+.verse-feedback {
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  color: var(--text-faint);
+}
+
+.verse-card.is-correct {
+  border-color: rgba(70, 200, 130, 0.55);
+  box-shadow: 0 0 26px rgba(70, 200, 130, 0.15);
+}
+.verse-card.is-correct .btn-check {
+  background: linear-gradient(135deg, #4bd482, #1f8f4a);
+}
+.verse-card.is-correct .verse-feedback { color: #6fe0a0; }
+
+.verse-card.is-wrong {
+  border-color: rgba(224, 90, 90, 0.55);
+  box-shadow: 0 0 26px rgba(224, 90, 90, 0.13);
+}
+.verse-card.is-wrong .btn-check {
+  background: linear-gradient(135deg, #e05a5a, #a52f2f);
+}
+.verse-card.is-wrong .verse-feedback { color: #ef9494; }
+
+@media (max-width: 640px) {
+  .verses-grid { grid-template-columns: 1fr; }
+  .game-hero { padding: 110px 0 30px; }
+}

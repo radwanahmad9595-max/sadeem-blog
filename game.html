@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لعبة أكمل السطر — مدونة السديم الأدبية</title>
+<meta name="description" content="اختبر ذاكرتك الأدبية: أكمل الكلمة الناقصة في أبيات شعرية مشهورة، واجمع النقاط.">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.svg" alt="شعار مدونة السديم" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-name">مدونة السديم</span>
+        <span class="brand-sub">الأدبية</span>
+      </div>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#texts">النصوص</a>
+      <a href="game.html" class="nav-cta">أكمل السطر</a>
+      <a href="index.html#about">عن المدونة</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="score-badge" id="scoreBadge">
+  <span class="score-star">✦</span>
+  <div class="score-nums">
+    <span class="score-value" id="scoreValue">0</span>
+    <span class="score-label">نقطة</span>
+  </div>
+  <div class="score-progress" id="scoreProgress">0 / 20</div>
+</div>
+
+<main class="game-main">
+  <section class="game-hero">
+    <div class="container">
+      <h1 class="game-title">لعبة <span>أكمل السطر</span></h1>
+      <p class="game-tagline">عشرون بيتاً من عيون الشعر العربي، ينقص كل واحد منها كلمة واحدة — هل تتذكرها؟</p>
+    </div>
+  </section>
+
+  <section class="verses-section">
+    <div class="container verses-grid" id="versesGrid"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.svg" alt="" class="footer-logo">
+      <span>مدونة السديم الأدبية</span>
+    </div>
+    <p>جميع الحقوق محفوظة &copy; <span id="year"></span> — مدونة السديم الأدبية</p>
+  </div>
+</footer>
+
+<script src="game.js"></script>
+</body>
+</html>
