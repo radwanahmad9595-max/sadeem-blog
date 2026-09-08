@@ -170,6 +170,16 @@
   const mainNav = document.getElementById("mainNav");
   navToggle.addEventListener("click", () => mainNav.classList.toggle("open"));
 
+  document.getElementById("resetGame").addEventListener("click", () => {
+    if (!confirm("هل تريد مسح كل إجاباتك ونقاطك والبدء من جديد؟")) return;
+    solved = new Set();
+    score = 0;
+    localStorage.removeItem(SOLVED_KEY);
+    localStorage.removeItem(SCORE_KEY);
+    updateScoreUI();
+    renderVerses();
+  });
+
   document.getElementById("year").textContent = new Date().getFullYear();
   buildStarfield();
   updateScoreUI();

@@ -67,6 +67,11 @@
   font-size: 1rem;
   line-height: 1.9;
 }
+.btn-reset {
+  margin-top: 26px;
+  font-size: 0.85rem;
+  padding: 10px 22px;
+}
 
 /* ---------- verses ---------- */
 .verses-section { padding: 20px 0 100px; position: relative; z-index: 1; }
