@@ -1,8 +1,7 @@
 (function () {
   "use strict";
 
-  // TODO: استبدل هذا الرقم برقم واتساب عملك الفعلي بصيغة دولية بدون + أو أصفار (مثال: 9665XXXXXXXX)
-  const WHATSAPP_NUMBER = "9665XXXXXXXX";
+  const WHATSAPP_NUMBER = "962799507178";
 
   function buildStarfield() {
     const container = document.getElementById("stars");
