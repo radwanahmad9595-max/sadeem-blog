@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خريطة الأدب والجغرافيا — مدونة السديم الأدبية</title>
+<meta name="description" content="خريطة تفاعلية تربط مدن العالم العربي بالنصوص والروايات والقصائد التي كُتبت عنها أو من وحيها.">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="map.css">
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.svg" alt="شعار مدونة السديم" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-name">مدونة السديم</span>
+        <span class="brand-sub">الأدبية</span>
+      </div>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#texts">النصوص</a>
+      <a href="game.html">أكمل السطر</a>
+      <a href="library.html">المكتبة</a>
+      <a href="map.html" class="nav-cta">خريطة الأدب</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="map-main">
+  <div class="container">
+    <div class="map-hero">
+      <h1 class="map-title">خريطة <span>الأدب والجغرافيا</span></h1>
+      <p class="map-tagline">انقر على أي مدينة لتكتشف الشعراء والروائيين الذين ارتبطت أسماؤهم بها، والأعمال التي كتبوها عنها أو من وحيها.</p>
+    </div>
+
+    <div class="map-layout">
+      <div class="map-parchment" id="mapParchment">
+        <svg class="map-compass" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#3c2c1c" stroke-width="1.5"/>
+          <path d="M50 10 L56 46 L50 50 L44 46 Z" fill="#7a2233"/>
+          <path d="M50 90 L56 54 L50 50 L44 54 Z" fill="#3c2c1c"/>
+          <path d="M10 50 L46 44 L50 50 L46 56 Z" fill="#3c2c1c"/>
+          <path d="M90 50 L54 44 L50 50 L54 56 Z" fill="#3c2c1c"/>
+        </svg>
+        <svg id="routesLayer" style="position:absolute; inset:0; width:100%; height:100%;"></svg>
+        <div id="pinsLayer"></div>
+      </div>
+
+      <div class="map-panel" id="mapPanel">
+        <p class="panel-placeholder">اختر مدينة من الخريطة لتظهر هنا النصوص والأعمال المرتبطة بها.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.svg" alt="" class="footer-logo">
+      <span>مدونة السديم الأدبية</span>
+    </div>
+    <p>جميع الحقوق محفوظة &copy; <span id="year"></span> — مدونة السديم الأدبية</p>
+  </div>
+</footer>
+
+<script src="map.js"></script>
+</body>
+</html>
