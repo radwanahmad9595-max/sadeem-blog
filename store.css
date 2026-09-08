@@ -1,8 +1,14 @@
+/* خط "متجر السديم" أبسط وأسهل قراءة من باقي الموقع — خط الطباعة على المنتجات نفسها (داخل الـ SVG) لم يتغيّر */
+.store-main, .store-main input, .store-main select, .store-main button {
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+}
+
 .store-main { padding: 130px 0 100px; position: relative; z-index: 1; }
 .store-hero { text-align: center; margin-bottom: 50px; }
 .store-title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
   margin-bottom: 14px;
 }
 .store-title span {
@@ -18,6 +24,18 @@
   font-size: 1rem;
   line-height: 1.9;
 }
+.store-notice {
+  max-width: 700px;
+  margin: 24px auto 0;
+  background: rgba(207, 158, 74, 0.08);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 22px;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
+.store-notice strong { color: var(--accent-2); }
 
 .products-grid {
   display: grid;
@@ -51,8 +69,11 @@
 }
 .product-visual svg { width: 100%; height: 100%; }
 
+.product-visual-photo { padding: 0; background: #0c0821; }
+.product-visual-photo img { width: 100%; height: 100%; object-fit: cover; }
+
 .product-info { padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.product-name { font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-main); }
+.product-name { font-family: 'Cairo', sans-serif; font-weight: 600; font-size: 1.15rem; color: var(--text-main); }
 .product-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.8; flex: 1; }
 .product-price { color: var(--accent-2); font-weight: 700; font-size: 1rem; }
 .product-order {
