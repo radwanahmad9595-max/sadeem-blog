@@ -1,0 +1,89 @@
+.library-main { padding: 130px 0 100px; position: relative; z-index: 1; }
+.library-hero { text-align: center; margin-bottom: 50px; }
+.library-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  margin-bottom: 14px;
+}
+.library-title span {
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.library-tagline {
+  color: var(--text-dim);
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.library-notice {
+  max-width: 700px;
+  margin: 26px auto 0;
+  background: rgba(207, 158, 74, 0.08);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 16px 22px;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
+.library-notice strong { color: var(--accent-2); }
+
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 46px;
+}
+
+.source-card {
+  background: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.source-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(207, 158, 74, 0.5);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+}
+.source-name {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  color: var(--text-main);
+}
+.source-desc { color: var(--text-dim); font-size: 0.92rem; line-height: 1.85; flex: 1; }
+.source-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.source-tag {
+  font-size: 0.72rem;
+  color: var(--accent-2);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-top: 6px;
+}
+.source-link:hover { filter: brightness(1.1); }
+
+@media (max-width: 640px) {
+  .sources-grid { grid-template-columns: 1fr; }
+  .library-main { padding: 110px 0 60px; }
+}
